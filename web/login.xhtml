@@ -14,49 +14,34 @@
     <h:form id="signupform">
     <div class="row">
         <div class="column-sm-4">
-            <h1>SIGN UP</h1>
+            <h1>LOGIN</h1>
             <div class="form-group">
-            <h:panelGroup class="alert alert-warning" rendered="#{SignUpBean.error}">
+            <h:panelGroup class="alert alert-warning" rendered="#{LoginBean.error}">
                 <h:outputText id="passAlert" value="Passwords doesnt match or empty fields!"/>
             </h:panelGroup>
                 </div> 
             <div class="form-group">
-            <h:panelGroup class="alert alert-success" rendered="#{SignUpBean.successful}">
+            <h:panelGroup class="alert alert-success" rendered="#{LoginBean.successful}">
                 <h:outputText id="successfulInfo" value="Successfully Signed Up!"/>
             </h:panelGroup>
             </div>   
             <div class="form-group">
                 <h:outputText value="Username:"/>
-                <h:inputText class="form-control" id="usrname" value="#{SignUpBean.username}"/>
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <h:inputText class="form-control" id="email" value="#{SignUpBean.email}"/>
+                <h:inputText class="form-control" id="usrname" value="#{LoginBean.username}"/>
             </div>
             <div class="form-group">
                 <label for="pwd">Password:</label>
-                <h:inputSecret class="form-control" id="pwd" value="#{SignUpBean.password}"/>
+                <h:inputSecret class="form-control" id="pwd" value="#{LoginBean.password}"/>
             </div> 
-            <div class="form-group">
-                <label for="pwda">Password Again:</label>
-                <h:inputSecret class="form-control" id="pwda" value="#{SignUpBean.passworda}"/>
-            </div> 
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <h:inputText class="form-control" id="name" value="#{SignUpBean.name}"/>
-            </div>
-            <div class="form-group">
-                <label for="age">Age:</label>
-                <h:inputText class="form-control" id="age" value="#{SignUpBean.age}"/>
-            </div>
-            <h:commandButton value="Sign Up" action="#{SignUpBean.signupButtonAction()}" class="btn btn-primary" type="submit">
+            <h:commandButton value="Login" action="#{LoginBean.loginButtonAction()}" class="btn btn-primary" type="submit">
                 <f:ajax execute="@form" render="@form" />
             </h:commandButton>
+            
         </div>
     </div>
     </h:form>
     <div class="row">
-        <h:button value="Go To Login" outcome="login" class="btn btn-primary"/>
+        <h:button value="Go To Sign Up" outcome="signup" class="btn btn-primary"/>
     </div>
 </div>
 </h:body>
