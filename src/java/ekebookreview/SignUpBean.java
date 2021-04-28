@@ -1,5 +1,7 @@
 package ekebookreview;
 
+import com.sun.org.apache.xml.internal.security.utils.Base64;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.sql.SQLException;
@@ -28,7 +30,15 @@ public class SignUpBean {
     private boolean error;
     private String hashed;
     private String salt;
-    
+    private String errorMessage;
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
     public boolean isSuccessful() {
         return successful;
     }
@@ -99,8 +109,8 @@ public class SignUpBean {
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             
             byte[] hash = factory.generateSecret(spec).getEncoded();
-            hashed = new String(hash);
-            salt = new String(saltTemp);
+            hashed = Base64.encode(hash);
+            salt = Base64.encode(saltTemp);
         }
         catch(Exception e){
             
@@ -117,6 +127,7 @@ public class SignUpBean {
         catch (SQLException sqlExcept)
         {
             sqlExcept.printStackTrace();
+            errorMessage=sqlExcept.toString();
             return false;
         }
     }

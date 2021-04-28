@@ -1,5 +1,6 @@
 package ekebookreview;
 
+import com.sun.org.apache.xml.internal.security.utils.Base64;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.sql.ResultSet;
@@ -25,7 +26,15 @@ public class LoginBean {
     private boolean error;
     private String hashed;
     private String salt;
-    
+    private String errorMessage;
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
     public boolean isSuccessful() {
         return successful;
     }
@@ -59,10 +68,13 @@ public class LoginBean {
             error=true;
             return;
         }
-        getHashSalt();
+        int id = getHashSalt();
         String tempHash = hashPassword();
-        if(tempHash.equals(hashed))
+        errorMessage = salt;
+        if(tempHash.equals(hashed)){
             successful=true;
+            new User(id);
+        }
         else
             error=true;
     }
@@ -75,33 +87,36 @@ public class LoginBean {
                 random.nextBytes(saltTemp);
             }
             else
-                saltTemp = salt.getBytes();
+                saltTemp = Base64.decode(salt);
             
             KeySpec spec = new PBEKeySpec(password.toCharArray(), saltTemp, 65536, 128);
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             
             byte[] hash = factory.generateSecret(spec).getEncoded();
-            return new String(hash);
+            return Base64.encode(hash);
         }
         catch(Exception e){
             return null;
         }
     }
-    private boolean getHashSalt(){
+    private int getHashSalt(){
+        int id;
         try{
             DBConnection db = new DBConnection();
             db.stmt = db.conn.createStatement();
-            ResultSet results = db.stmt.executeQuery("SELECT password,salt FROM users WHERE username='"+username+"'");
+            ResultSet results = db.stmt.executeQuery("SELECT password,salt,id FROM users WHERE username='"+username+"'");
             results.next();
             hashed = results.getString("password");
             salt = results.getString("salt");
+            id = results.getInt("id");
             results.close();
             db.stmt.close();
-            return true;
+            return id;
         }
         catch(SQLException sqlExcept){
             sqlExcept.printStackTrace();
-            return false;
+            
+            return 0;
         }
     }
 }
