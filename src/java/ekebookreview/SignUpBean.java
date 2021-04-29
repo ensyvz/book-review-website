@@ -1,18 +1,16 @@
 package ekebookreview;
 
 import com.sun.org.apache.xml.internal.security.utils.Base64;
-import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.sql.SQLException;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 @ManagedBean(name="SignUpBean")
-@RequestScoped
+@ViewScoped
 public class SignUpBean {
 
     public SignUpBean() {

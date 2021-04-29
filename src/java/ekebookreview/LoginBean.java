@@ -8,13 +8,24 @@ import java.sql.SQLException;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 
-@ManagedBean(name="LoginBean")
-@RequestScoped
+@ManagedBean(name = "LoginBean")
+@ViewScoped
 public class LoginBean {
 
+    @ManagedProperty(value = "#{Main}")
+    MainBean main;
+
+    public MainBean getMain() {
+        return main;
+    }
+
+    public void setMain(MainBean main) {
+        this.main = main;
+    }
+    
     public LoginBean() {
         this.successful = false;
         this.error = false;
@@ -26,15 +37,16 @@ public class LoginBean {
     private boolean error;
     private String hashed;
     private String salt;
-    private String errorMessage;
+    private String welcomeMessage;
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public String getWelcomeMessage() {
+        return welcomeMessage;
     }
 
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
+    public void setWelcomeMessage(String welcomeMessage) {
+        this.welcomeMessage = welcomeMessage;
     }
+
     public boolean isSuccessful() {
         return successful;
     }
@@ -50,61 +62,67 @@ public class LoginBean {
     public void setError(boolean error) {
         this.error = error;
     }
+
     public String getUsername() {
         return username;
     }
+
     public void setUsername(String username) {
         this.username = username;
     }
+
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    public void loginButtonAction(){
-        if(username.isEmpty()||password.isEmpty()){
-            error=true;
+
+    public void loginButtonAction() {
+        if (username.isEmpty() || password.isEmpty()) {
+            error = true;
             return;
         }
         int id = getHashSalt();
         String tempHash = hashPassword();
-        errorMessage = salt;
-        if(tempHash.equals(hashed)){
-            successful=true;
-            new User(id);
+        if (tempHash.equals(hashed)) {
+            successful = true;
+            main.user = new User(id);
+            welcomeMessage=main.user.name+" welcomes";
+        } 
+        else {
+            error = true;
         }
-        else
-            error=true;
     }
-    private String hashPassword(){
-        try{
+
+    private String hashPassword() {
+        try {
             SecureRandom random = new SecureRandom();
             byte[] saltTemp;
-            if(salt==null){
+            if (salt == null) {
                 saltTemp = new byte[16];
                 random.nextBytes(saltTemp);
-            }
-            else
+            } else {
                 saltTemp = Base64.decode(salt);
-            
+            }
+
             KeySpec spec = new PBEKeySpec(password.toCharArray(), saltTemp, 65536, 128);
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-            
+
             byte[] hash = factory.generateSecret(spec).getEncoded();
             return Base64.encode(hash);
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
-    private int getHashSalt(){
+
+    private int getHashSalt() {
         int id;
-        try{
+        try {
             DBConnection db = new DBConnection();
             db.stmt = db.conn.createStatement();
-            ResultSet results = db.stmt.executeQuery("SELECT password,salt,id FROM users WHERE username='"+username+"'");
+            ResultSet results = db.stmt.executeQuery("SELECT password,salt,id FROM users WHERE username='" + username + "'");
             results.next();
             hashed = results.getString("password");
             salt = results.getString("salt");
@@ -112,11 +130,10 @@ public class LoginBean {
             results.close();
             db.stmt.close();
             return id;
-        }
-        catch(SQLException sqlExcept){
+        } catch (SQLException sqlExcept) {
             sqlExcept.printStackTrace();
-            
             return 0;
+
         }
     }
 }
