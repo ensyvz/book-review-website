@@ -8,6 +8,7 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+//this class might not have to be a bean
 @ManagedBean(name="User")
 @SessionScoped
 public class User {
@@ -16,12 +17,20 @@ public class User {
     String name;
     String username;
     DBConnection db;
+    boolean isGuest;
     
     public User(int id) {
         db = new DBConnection();
         this.id = id;
-        getUserInfo();
+        if(id==0){
+            isGuest = true;
+        }
+        else {
+            getUserInfo();
+            isGuest = false;
+        }
     }
+    
     private void getUserInfo(){
         try{
             db.stmt = db.conn.createStatement();

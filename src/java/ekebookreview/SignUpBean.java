@@ -1,16 +1,16 @@
 package ekebookreview;
 
+import com.sun.org.apache.xml.internal.security.utils.Base64;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.sql.SQLException;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 @ManagedBean(name="SignUpBean")
-@RequestScoped
+@ViewScoped
 public class SignUpBean {
 
     public SignUpBean() {
@@ -99,8 +99,8 @@ public class SignUpBean {
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             
             byte[] hash = factory.generateSecret(spec).getEncoded();
-            hashed = new String(hash);
-            salt = new String(saltTemp);
+            hashed = Base64.encode(hash);
+            salt = Base64.encode(saltTemp);
         }
         catch(Exception e){
             
