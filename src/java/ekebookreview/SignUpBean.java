@@ -1,9 +1,9 @@
 package ekebookreview;
 
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.sql.SQLException;
+import java.util.Base64;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.faces.bean.ManagedBean;
@@ -92,10 +92,12 @@ public class SignUpBean {
     public void signupButtonAction(){
         if(username.isEmpty()||email.isEmpty()||password.isEmpty()||name.isEmpty()||!password.equals(passworda)){
             error=true;
+            successful = false;
             return;
         }
         hashPassword();
         successful = signToDB();
+        error = !successful;
     }
     private void hashPassword(){
         try{
@@ -107,8 +109,8 @@ public class SignUpBean {
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             
             byte[] hash = factory.generateSecret(spec).getEncoded();
-            hashed = Base64.encode(hash);
-            salt = Base64.encode(saltTemp);
+            hashed = Base64.getEncoder().encodeToString(hash);
+            salt = Base64.getEncoder().encodeToString(saltTemp);
         }
         catch(Exception e){
             
