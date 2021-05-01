@@ -1,10 +1,10 @@
 package ekebookreview;
 
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Base64;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.faces.bean.ManagedBean;
@@ -30,7 +30,7 @@ public class LoginBean {
         this.successful = false;
         this.error = false;
     }
-
+    
     private String username;
     private String password;
     private boolean successful;
@@ -82,17 +82,20 @@ public class LoginBean {
     public void loginButtonAction() {
         if (username.isEmpty() || password.isEmpty()) {
             error = true;
+            successful = false;
             return;
         }
         int id = getHashSalt();
         String tempHash = hashPassword();
         if (tempHash.equals(hashed)) {
             successful = true;
+            error = false;
             main.user = new User(id);
             welcomeMessage=main.user.name+" welcomes";
         } 
         else {
             error = true;
+            successful = false;
         }
     }
 
@@ -104,14 +107,14 @@ public class LoginBean {
                 saltTemp = new byte[16];
                 random.nextBytes(saltTemp);
             } else {
-                saltTemp = Base64.decode(salt);
+                saltTemp = Base64.getDecoder().decode(salt);
             }
 
             KeySpec spec = new PBEKeySpec(password.toCharArray(), saltTemp, 65536, 128);
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
 
             byte[] hash = factory.generateSecret(spec).getEncoded();
-            return Base64.encode(hash);
+            return Base64.getEncoder().encodeToString(hash);
         } catch (Exception e) {
             return null;
         }
