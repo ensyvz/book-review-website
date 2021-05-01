@@ -10,6 +10,7 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 @ManagedBean(name = "LoginBean")
 @ViewScoped
@@ -25,12 +26,12 @@ public class LoginBean {
     public void setMain(MainBean main) {
         this.main = main;
     }
-    
+
     public LoginBean() {
         this.successful = false;
         this.error = false;
     }
-    
+
     private String username;
     private String password;
     private boolean successful;
@@ -90,12 +91,16 @@ public class LoginBean {
         if (tempHash.equals(hashed)) {
             successful = true;
             error = false;
-            main.user = new User(id);
-            welcomeMessage=main.user.name+" welcomes";
-        } 
-        else {
+            main.setUser(new User(id));
+            welcomeMessage = main.getUser().getName() + " welcomes";
+        } else {
             error = true;
             successful = false;
+        }
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("navbar.xhtml");
+        } catch (Exception e) {
+
         }
     }
 

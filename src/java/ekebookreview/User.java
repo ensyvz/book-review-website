@@ -13,11 +13,11 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class User {
     
-    int id;
-    String name;
-    String username;
-    DBConnection db;
-    boolean isGuest;
+    private int id;
+    private String name;
+    private String username;
+    private DBConnection db;
+    private boolean isGuest;
     
     public User(int id) {
         db = new DBConnection();
@@ -44,5 +44,45 @@ public class User {
         catch(SQLException sqlExcept){
             sqlExcept.printStackTrace();
         }
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public DBConnection getDb() {
+        return db;
+    }
+
+    public void setDb(DBConnection db) {
+        this.db = db;
+    }
+
+    public boolean isIsGuest() {
+        return isGuest;
+    }
+
+    public void setIsGuest(boolean isGuest) {
+        this.isGuest = isGuest;
     }
 }
