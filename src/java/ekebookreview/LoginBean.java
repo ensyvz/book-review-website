@@ -91,7 +91,7 @@ public class LoginBean {
         if (tempHash.equals(hashed)) {
             successful = true;
             error = false;
-            main.setUser(new User(id));
+            main.setUser(new UserBean(id));
             welcomeMessage = main.getUser().getName() + " welcomes";
         } else {
             error = true;
