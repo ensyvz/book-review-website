@@ -1,5 +1,8 @@
 package ekebookreview;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+
 public class Book {
 
     private int id;
@@ -8,14 +11,17 @@ public class Book {
     private String publisher;
     private String synopsis;
     private float rating;
-    
-    public Book(int id, String name, String author, String publisher, String synopsis, float rating) {
+
+    public Book(int id, String name, String author, String synopsis, float rating) {
         this.id = id;
         this.name = name;
         this.author = author;
-        this.publisher = publisher;
         this.synopsis = synopsis;
-        this.rating = rating;
+        DecimalFormat df = new DecimalFormat("#.##");
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        dfs.setDecimalSeparator('.');
+        df.setDecimalFormatSymbols(dfs);
+        this.rating = Float.valueOf(df.format(rating));
     }
 
     public int getId() {
@@ -65,6 +71,5 @@ public class Book {
     public void setRating(float rating) {
         this.rating = rating;
     }
-    
-    
+
 }

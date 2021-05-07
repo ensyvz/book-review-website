@@ -7,23 +7,23 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class MainBean {
 
-    private User user;
+    private UserBean user;
 
-    public User getUser() {
+    public UserBean getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserBean user) {
         this.user = user;
     }
     
     public MainBean() {
-        this.user = new User(0);
+        this.user = new UserBean(0);
     }
     
     public void logout(){
         if(this.getUser().getId() != 0){
-            this.user = new User(0);
+            this.user = new UserBean(0);
         }
     }
 }

@@ -1,7 +1,7 @@
-Sun May 02 13:45:09 EEST 2021 : Apache Derby Network Server - 10.10.2.0 - (1582446) started and ready to accept connections on port 1527
+Sun May 02 15:41:53 EEST 2021 : Apache Derby Network Server - 10.10.2.0 - (1582446) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Sun May 02 13:45:09 EEST 2021:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-0179-2cae-83c2-00004e14c01d 
+Sun May 02 15:41:53 EEST 2021:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-0179-2d19-60a2-00004e14c01d 
 on database directory C:\Users\ensyv\Documents\NetBeansProjects\EKEBookReviewSite\BookSiteDatabase with class loader sun.misc.Launcher$AppClassLoader@27c170f0 
 Loaded from file:/C:/Users/ensyv/Downloads/glassfish-4.1.1/glassfish4/javadb/lib/derby.jar
 java.vendor=Oracle Corporation
@@ -12,8 +12,3 @@ os.arch=amd64
 os.version=10.0
 derby.system.home=C:\Users\ensyv\Documents\NetBeansProjects\EKEBookReviewSite
 Database Class Loader started - derby.database.classpath=''
-----------------------------------------------------------------
-Sun May 02 14:40:32 EEST 2021: Shutting down Derby engine
-----------------------------------------------------------------
-Sun May 02 14:40:33 EEST 2021:
-Shutting down instance a816c00e-0179-2cae-83c2-00004e14c01d on database directory C:\Users\ensyv\Documents\NetBeansProjects\EKEBookReviewSite\BookSiteDatabase with class loader sun.misc.Launcher$AppClassLoader@27c170f0 

@@ -1,40 +1,26 @@
 package ekebookreview;
-import java.security.SecureRandom;
-import java.security.spec.KeySpec;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 
-//this class might not have to be a bean
-@ManagedBean(name="User")
-@SessionScoped
 public class User {
-    
     private int id;
-    private String name;
     private String username;
+    private String email;
+    private String name;
     private DBConnection db;
-    private boolean isGuest;
     
-    public User(int id) {
-        db = new DBConnection();
+    public User(int id, String username, String name) {
         this.id = id;
-        if(id==0){
-            isGuest = true;
-        }
-        else {
-            getUserInfo();
-            isGuest = false;
-        }
+        this.username = username;
+        this.name = name;
     }
-    
-    private void getUserInfo(){
+    public User(int id){
+        this.id=id;
+        db = new DBConnection();
         try{
             db.stmt = db.conn.createStatement();
-            ResultSet results = db.stmt.executeQuery("SELECT name,username FROM users WHERE id="+id);
+            ResultSet results = db.stmt.executeQuery("SELECT name,username FROM users WHERE id="+this.id);
             results.next();
             name = results.getString("name");
             username = results.getString("username");
@@ -54,14 +40,6 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getUsername() {
         return username;
     }
@@ -70,19 +48,19 @@ public class User {
         this.username = username;
     }
 
-    public DBConnection getDb() {
-        return db;
+    public String getEmail() {
+        return email;
     }
 
-    public void setDb(DBConnection db) {
-        this.db = db;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public boolean isIsGuest() {
-        return isGuest;
+    public String getName() {
+        return name;
     }
 
-    public void setIsGuest(boolean isGuest) {
-        this.isGuest = isGuest;
+    public void setName(String name) {
+        this.name = name;
     }
 }
