@@ -20,13 +20,13 @@
          -->
         <header class="navbar navbar-expand-md navbar-light bd-navbar bg-light">
             <nav class="container-xxl flex-wrap flex-md-nowrap">
-                <h:link class="navbar-brand ms-2 text-primary" outcome="navbar" value="B" style="font-family:Leckerli One;font-size:30px;"/>
+                <h:link class="navbar-brand ms-2 text-primary" outcome="index" value="B" style="font-family:Leckerli One;font-size:30px;"/>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav">
-                        <h:link class="nav-link #{view.viewId eq '/navbar.xhtml'?'active':''}" outcome="navbar" value="Home"/>
+                        <h:link class="nav-link #{view.viewId eq '/index.xhtml'?'active':''}" outcome="index" value="Home"/>
                         <a class="nav-link" href="#">Features</a>                    
                     </div>
                     <div class="navbar-nav ms-auto">

@@ -1,50 +1,78 @@
 package ekebookreview;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSetMetaData;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DBConnection {
+
     private static String dbURL = "jdbc:derby://localhost:1527/BookSiteDatabase;user=admin;password=admin";
-    private static String tableName = "restaurants";
-    // jdbc Connection
-    public static Connection conn = null;
-    public Statement stmt = null;
-    public DBConnection(){
-        createConnection();
+    public Connection conn;
+    public Statement stmt;
+    
+    public DBConnection() {
+        conn=createConnection();
     }
-    private void createConnection()
-    {
-        try
-        {
+
+    private static Connection createConnection() {
+        try {
             Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
             //Get a connection
-            conn = DriverManager.getConnection(dbURL); 
-        }
-        catch (Exception except)
-        {
+            return DriverManager.getConnection(dbURL);
+        } catch (Exception except) {
             except.printStackTrace();
+            return null;
         }
     }
-    public void shutdown()
-    {
-        try
-        {
-            if (stmt != null)
-            {
-                stmt.close();
-            }
-            if (conn != null)
-            {
-                DriverManager.getConnection(dbURL + ";shutdown=true");
-                conn.close();
-            }           
-        }
-        catch (SQLException sqlExcept)
-        {
+
+    public static List<Map<String, Object>> executeQuery(String query) {
+        List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
+        Map<String, Object> row = null;
+        
+        try {
+            Connection conn = createConnection();
+            Statement stmt;
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
             
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            while (rs.next()) {
+                row = new HashMap<String, Object>();
+                for (int i = 1; i <= columnCount; i++) {
+                    row.put(metaData.getColumnName(i), rs.getObject(i));
+                }
+                resultList.add(row);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException sqlExcept) {
+            sqlExcept.printStackTrace();
+            System.out.println(sqlExcept.toString());
+        }
+        return resultList;
+    }
+    
+    public static void execute(String str) {
+        try {
+            Connection conn = createConnection();
+            Statement stmt;
+            stmt = conn.createStatement();
+            stmt.execute(str);
+            
+            stmt.close();
+            conn.close();
+        } catch (SQLException sqlExcept) {
+            sqlExcept.printStackTrace();
         }
     }
 }

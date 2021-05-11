@@ -1,10 +1,13 @@
 package ekebookreview;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -13,7 +16,7 @@ import javax.faces.context.FacesContext;
 
 @ManagedBean(name = "BookBean")
 @ViewScoped
-public class BookBean {
+public class BookBean implements Serializable{
 
     @ManagedProperty(value = "#{Main}")
     MainBean main;
@@ -111,21 +114,8 @@ public class BookBean {
     }
 
     private void getBookDB() {
-        try {
-            DBConnection db = new DBConnection();
-            db.stmt = db.conn.createStatement();
-            ResultSet results = db.stmt.executeQuery("SELECT id,name,author,synopsis,rating FROM book WHERE id=" + id);
-            results.next();
-            book = new Book(results.getInt("id"),
-                    results.getString("name"),
-                    results.getString("author"),
-                    results.getString("synopsis"),
-                    results.getBigDecimal("rating").floatValue());
-            results.close();
-            db.stmt.close();
-        } catch (SQLException sqlExcept) {
-            sqlExcept.printStackTrace();
-        }
+        List<Map<String,Object>> r = DBConnection.executeQuery("SELECT * FROM book WHERE id="+id);
+        book = new Book((Integer)r.get(0).get("ID"));
     }
 
     private void getReviewsDB() {
