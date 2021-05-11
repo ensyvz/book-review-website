@@ -1,7 +1,10 @@
 package ekebookreview;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class Review {
     private int id;
@@ -23,6 +26,17 @@ public class Review {
             else
                 reviewStars.add(false);
         }
+    }
+    public Review(int id){
+        this.id = id;
+        List<Map<String,Object>> result;
+        result = DBConnection.executeQuery("SELECT id,userId,comment,rating FROM review WHERE id=" + id);
+        Map<String,Object> rs = result.get(0);
+        this.id = (Integer) rs.get("ID");
+        this.user = new User((Integer)rs.get("USERID"));
+        this.comment = (String) rs.get("COMMENT");
+        BigDecimal bg = (BigDecimal)rs.get("RATING");
+        this.rating = bg.floatValue();
     }
 
     public int getId() {

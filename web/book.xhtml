@@ -16,6 +16,7 @@
             <f:viewParam name="id" value="#{BookBean.id}" />
             <f:viewAction action="#{BookBean.onLoad}" />
         </f:metadata>
+        <title>#{BookBean.book.name}</title>
     </h:head>
     <h:body>
         <style>
@@ -58,8 +59,12 @@
         </ui:insert>
         <script>
             $(document).ready(function () {
+                let searchParams = new URLSearchParams(window.location.search)
                 if (!location.hash) {
-                    location.hash = '#synopsis';
+                    if(searchParams.has('review'))
+                        location.hash = '#review';
+                    else
+                        location.hash = '#synopsis';
                 }
                 var activePage = location.hash;
                 var pages = ['#synopsis', '#review'];
@@ -119,11 +124,11 @@
             });
         </script>
         <div class="d-flex mx-auto position-relative" style="height: 354px;">
-            <div class="background-book" style="background-image:url('#{request.contextPath}/resources/book-images/1.jpg');">
+            <div class="background-book" style="background-image:url('#{request.contextPath}/resources/book-images/#{BookBean.book.id}.jpg');">
             </div>
             <div class="row mx-auto container-xxl">
                 <div class="col-2 mt-5">
-                    <h:graphicImage class="rounded" url="/resources/book-images/1.jpg" width="154" height="246"/>
+                    <h:graphicImage class="rounded" url="/resources/book-images/#{BookBean.book.getId()}.jpg" width="154" height="246"/>
                 </div>
                 <div class="col-7 my-auto">
                     <h:outputText class="row h1 text-white" value="#{BookBean.book.name}" style="font-family: Georgia;font-weight: bold;"/>
