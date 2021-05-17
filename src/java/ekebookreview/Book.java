@@ -86,4 +86,11 @@ public class Book {
         str += "...";
         return str;
     }
+    public String getShortSynopsis(int length){
+        String str = synopsis;
+        if(synopsis.length()>length)
+            str = synopsis.substring(0, length+1);
+        str += "...";
+        return str;
+    }
 }
