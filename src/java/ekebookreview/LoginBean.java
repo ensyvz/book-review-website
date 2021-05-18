@@ -98,7 +98,8 @@ public class LoginBean {
             successful = false;
         }
         try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("navbar.xhtml");
+            if(successful)
+                FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
         } catch (Exception e) {
 
         }

@@ -16,9 +16,9 @@ public class DBConnection {
     private static String dbURL = "jdbc:derby://localhost:1527/BookSiteDatabase;user=admin;password=admin";
     public Connection conn;
     public Statement stmt;
-    
+
     public DBConnection() {
-        conn=createConnection();
+        conn = createConnection();
     }
 
     private static Connection createConnection() {
@@ -35,13 +35,13 @@ public class DBConnection {
     public static List<Map<String, Object>> executeQuery(String query) {
         List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
         Map<String, Object> row = null;
-        
+
         try {
             Connection conn = createConnection();
             Statement stmt;
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
-            
+
             ResultSetMetaData metaData = rs.getMetaData();
             int columnCount = metaData.getColumnCount();
 
@@ -61,18 +61,38 @@ public class DBConnection {
         }
         return resultList;
     }
-    
+
     public static void execute(String str) {
         try {
             Connection conn = createConnection();
             Statement stmt;
             stmt = conn.createStatement();
             stmt.execute(str);
-            
+
             stmt.close();
             conn.close();
         } catch (SQLException sqlExcept) {
             sqlExcept.printStackTrace();
         }
+    }
+
+    public static int executeUpdate(String str) {
+        int key = 0;
+        try {
+            Connection conn = createConnection();
+            Statement stmt;
+            stmt = conn.createStatement();
+            stmt.executeUpdate(str, Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs = stmt.getGeneratedKeys();
+
+            if (rs.next()) {
+                key = rs.getInt(1); //this is the auto-generated key for your use
+            }
+            stmt.close();
+            conn.close();
+        } catch (SQLException sqlExcept) {
+            sqlExcept.printStackTrace();
+        }
+        return key;
     }
 }
