@@ -50,11 +50,6 @@ public class HomeBean implements Serializable{
             Book b = new Book((Integer)rs.get("ID"));
             ArrayList<Object> n = new ArrayList<Object>();
             n.add(b);
-            List<Map<String,Object>> review;
-            review = DBConnection.executeQuery("SELECT id FROM review WHERE bookId="+b.getId()+" ORDER BY id DESC FETCH FIRST 1 ROWS ONLY");
-            if(review.isEmpty())
-                return;
-            n.add(new Review((Integer)review.get(0).get("ID")));
             books.add(n);
         });
         return books;
