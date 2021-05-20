@@ -27,7 +27,8 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav">
                         <h:link class="nav-link #{view.viewId eq '/index.xhtml'?'active':''}" outcome="index" value="Home"/>
-                        <h:link class="nav-link #{view.viewId eq '/search.xhtml'?'active':''}" outcome="search" value="Search"/>                  
+                        <h:link class="nav-link #{view.viewId eq '/search.xhtml'?'active':''}" outcome="search" value="Search"/>
+                        <h:link class="nav-link #{view.viewId eq '/addbook.xhtml'?'active':''}" outcome="addbook" value="Add Book" rendered="#{!Main.user.isGuest}"/>
                     </div>
                     <div class="navbar-nav ms-auto">
                         <div class="d-flex">

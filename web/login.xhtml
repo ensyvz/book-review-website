@@ -44,6 +44,11 @@
                             </h:panelGroup>
                         </div> 
                         <div class="form-group">
+                            <h:panelGroup class="alert alert-danger small p-1" rendered="#{LoginBean.error}" style="display:inline-block;">
+                                <h:outputText value="Wrong Password or Username!"/>
+                            </h:panelGroup>
+                        </div> 
+                        <div class="form-group">
                             <h:panelGroup class="alert alert-success" rendered="#{LoginBean.successful}" style="display:inline-block;">
                                 <h:outputText id="successfulInfo" value="Successfully Logged In!"/>
                             </h:panelGroup>
