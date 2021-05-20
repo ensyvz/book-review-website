@@ -21,9 +21,10 @@ public class MainBean {
         this.user = new UserBean(0);
     }
     
-    public void logout(){
+    public String logout(){
         if(this.getUser().getId() != 0){
             this.user = new UserBean(0);
         }
+        return "index";
     }
 }

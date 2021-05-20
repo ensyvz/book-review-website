@@ -20,10 +20,11 @@ public class User {
         db = new DBConnection();
         try{
             db.stmt = db.conn.createStatement();
-            ResultSet results = db.stmt.executeQuery("SELECT name,username FROM users WHERE id="+this.id);
+            ResultSet results = db.stmt.executeQuery("SELECT name,username,email FROM users WHERE id="+this.id);
             results.next();
             name = results.getString("name");
             username = results.getString("username");
+            email = results.getString("email");
             results.close();
             db.stmt.close();
         }

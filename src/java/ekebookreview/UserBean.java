@@ -30,13 +30,13 @@ public class UserBean {
             getUserInfo();
             isGuest = false;
         }
-        user = new User(id,username,name);
+        user = new User(id);
     }
     
     private void getUserInfo(){
         try{
             db.stmt = db.conn.createStatement();
-            ResultSet results = db.stmt.executeQuery("SELECT name,username FROM users WHERE id="+id);
+            ResultSet results = db.stmt.executeQuery("SELECT name,username,email FROM users WHERE id="+id);
             results.next();
             name = results.getString("name");
             username = results.getString("username");
@@ -46,6 +46,14 @@ public class UserBean {
         catch(SQLException sqlExcept){
             sqlExcept.printStackTrace();
         }
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getId() {

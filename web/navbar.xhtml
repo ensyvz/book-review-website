@@ -36,7 +36,7 @@
                                 <h:button class="btn btn-outline-success rounded-pill" value="Log In" outcome="login"/>
                             </h:panelGroup>
                             <h:panelGroup rendered="#{Main.user.id ne 0}">
-                                <h:button class="btn btn-outline-secondary dropdown-toggle me-2" value="#{Main.user.name}"/>
+                                <h:button class="btn btn-outline-secondary dropdown-toggle me-2" value="#{Main.user.name}" outcome="usersettings"/>
                                 <h:form>
                                     <h:commandButton class="btn btn-danger" value="Logout" action="#{Main.logout()}"/>
                                 </h:form>

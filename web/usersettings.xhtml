@@ -16,85 +16,66 @@
         <ui:insert>
             <ui:include src="navbar.xhtml" />
         </ui:insert>
-        
-        <div class="bg-light w-75 h-100 position-absolute" style="margin-left:12%;padding-top:3%; padding-left: 5%; border-left:2px solid black; border-right:2px solid black;">
-        <div class="col-12">
-                 <h1 style="text-decoration: underline;">User Settings</h1>
-                 
-                 <div class="my-5">     
-                     <h3>User Informations</h3>
-                    <span class="d-block my-2">Name:</span>
-                    <span class="d-block my-2">Surname:</span>
-                    <span class="d-block my-2">E-mail:</span>
-                 </div>
-                 
-                 <div>
-                     <h3> Change Your Password</h3>
-                     
-                         <div class="row">
-                             <div class="col-3 my-2">
-                                <label>Old Password:</label>
-                             </div>
-                            <div class="col-1">
-                                <input type="password" name="oldpass" ></input>
-                             </div>
-                         </div>
-                         <div class="row">
-                             <div class="col-3 my-2">
-                                <label>New Password:</label>
-                             </div>
-                             <div class="col-1">
-                                 <input type="password" name="newpass"></input>
-                             </div>
-                         </div>
-                     <div class="row">
-                         <div class="col-3 my-2">
-                            <label>New Password Again:</label>
-                         </div>
-                         <div class="col-1">
-                            <input type="password" name="newpassagain" ></input>
-                         </div>
-                     </div>
-                     <div class="row">
-                         <div class="col-3 px-1" style="margin-left:12rem;">
-                             <input class="float-end" type="submit" value="Change Password" ></input>
-                         </div>
-                     </div>
-                    
-                     
-                     
-                     
-                     
-                 </div>
-                 
-                 <div  class="my-5">
-                     <h3> Change Your E-mail</h3>
-                     
-                         
-                         <div class="row">
-                             <div class="col-3 my-2">
-                                <label>New E-mail:</label>
-                             </div>
-                             <div class="col-1">
-                                 <input type="text" name="newmail"></input>
-                             </div>
-                         </div>
-                     
-                     <div class="row">
-                         <div class="col-3 px-1" style="margin-left:12rem;">
-                             <input class="float-end" type="submit" value="Change E-mail" ></input>
-                         </div>
-                     </div>
-                    
-                     
-                     
-                     
-                     
-                 </div>
-            
-         </div>
-        </div>
-        
-        
+
+        <h:panelGroup class="w-75 pb-5 position-absolute shadow" style="margin-left:12%;padding-top:3%; padding-left: 5%;" rendered="#{!Main.user.isGuest}">
+            <div class="col-12">
+
+                <h1 style="text-decoration: underline;">User Settings</h1>
+
+                <div class="my-5">     
+                    <h3>User Informations</h3>
+                    <h:outputText class="my-2" value="Name: "/>
+                    <h:outputText class="my-2" value="#{Main.user.user.name}"/><br/>
+                    <h:outputText class="my-2" value="E-mail: "/>
+                    <h:outputText class="my-2" value="#{Main.user.user.email}"/>
+                </div>
+
+                <div>
+                    <h:form id="form">
+                        <h:panelGroup class="alert alert-success row" rendered="#{settings.successful}" style="display:inline-block;">
+                            <h:outputText id="successfulInfo" value="Password changed successfully!"/>
+                        </h:panelGroup>
+                        <h:panelGroup class="alert alert-danger row" rendered="#{settings.error}" style="display:inline-block;">
+                            <h:outputText id="errorInfo" value="Old password not correct or new passwords is not same!"/>
+                        </h:panelGroup>
+                        <h3> Change Your Password</h3>
+                        <div class="row">
+                            <div class="col-3 my-2">
+                                <label class="form-label">Old Password:</label>
+                            </div>
+                            <div class="col-3">
+                                <h:inputSecret class="form-control" value="#{settings.oldPassword}"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3 my-2">
+                                <label class="form-label">New Password:</label>
+                            </div>
+                            <div class="col-3">
+                                <h:inputSecret class="form-control" value="#{settings.newPassword}"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3 my-2">
+                                <label class="form-label">New Password Again:</label>
+                            </div>
+                            <div class="col-3">
+                                <h:inputSecret class="form-control" value="#{settings.newPasswordAgain}"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <h:commandButton id="submitbtn" action="#{settings.changePassword()}" class="float-end btn btn-primary" type="submit" value="Change Password">
+                                    <f:ajax execute="@form" render="@form"/>
+                                </h:commandButton>
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{Main.user.isGuest}">
+            <h:outputText class="text-danger h1 d-flex justify-content-center mt-3" value="Please Log In To See This Page !"/>
+        </h:panelGroup>
     </h:body>
 </html>
